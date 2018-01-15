@@ -1,0 +1,12 @@
+server:
+  port: 8090
+  
+security:
+  oauth2:
+    client:
+      client-id: devapp
+      client-secret: password
+      access-token-uri: http://192.168.0.190:6828/oauth/token
+      user-authorization-uri: http://192.168.0.190:6828/oauth/authorize
+    resource:
+      user-info-uri: http://192.168.0.190:6828/user

@@ -1,0 +1,39 @@
+pg:
+ image: hub.appranix.net/onprem/postgres:1
+ ports:
+   - "5432:5432"
+ environment:
+   - POSTGRES_PASSWORD=dbpassword
+   - POSTGRES_USER=postgres
+   - POSTGRES_DB=sphinxdb
+ volumes:
+  - ~/appranix-data/postgres:/var/lib/postgresql/data:z
+
+sphinx-api:
+  image: registry.appranix.net/prana/sphinx-api:sphinx-api-b20171204.3
+  volumes:
+    - ~/local-cert2/saml.p12:/opt/saml.p12:z
+  ports:
+    - "6828:6828"
+  environment:
+    - SPHINX_DB_HOST=172.17.0.2
+    - SPHINX_DB=sphinxdb
+    - SPHINX_DB_SCHEMA=public
+    - SPHINX_DB_USER=postgres
+    - SPHINX_DB_PASSWORD=dbpassword
+    - BACKEND_USERNAME=admin
+    - BACKEND_PASSWORD=sphinxadmin
+    - FROM_ADDRESS=no-reply@appranix.com
+    - ACTIVATION_URL=http://display:3000/user/setpassword?token=
+    - ACCOUNT_LOGO_DIRECTORY=/var/sphinx/asset/logo/account
+    - PARTNER_LOGO_DIRECTORY=/var/sphinx/asset/logo/partner
+    - ACCOUNT_WEB_SERVER=http://localhsot/static/sphinx/asset/logo
+    - ORG_GRADLE_PROJECT_applicationName=sphinx
+    - AES_SALT=TestTestTestTest
+    - KEYSTORE_PATH=/opt/saml.p12
+    - KEYSTORE_ALIAS=saml-ks
+    - KEYSTORE_PASSWORD=samlpassword
+    - _JAVA_OPTIONS=-Dlogging.level.com.appranix=DEBUG -Dspring.profiles.active=dev
+
+
+
